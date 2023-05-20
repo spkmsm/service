@@ -14,6 +14,10 @@ app.use(express.json());
 const routes = require("./router/index");
 app.use("/api", routes);
 
+app.get("/", (req, res) => {
+  res.send("hello world!");
+});
+
 mongoose.connect(process.env.MONGODB_URL).then(() => {
   app.listen(process.env.port, () => {
     console.log(`API listening on PORT ${process.env.port} `);
