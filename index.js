@@ -1,16 +1,21 @@
 const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
 
 const app = express();
-const PORT = 4000;
 
-app.listen(PORT, () => {
-  console.log(`API listening on PORT ${PORT} `);
-});
+app.use(cors());
+app.use(morgan("tiny"));
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hey this is my API running 🥳");
-});
+// all routes
+const routes = require("./router/index");
+app.use("/api", routes);
 
-app.get("/about", (req, res) => {
-  res.send("This is my about route..... ");
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+  app.listen(process.env.port, () => {
+    console.log(`API listening on PORT ${process.env.port} `);
+  });
 });
